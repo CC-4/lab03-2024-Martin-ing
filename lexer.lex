@@ -87,7 +87,17 @@ WHITE = (" "|\t|\n)
 
 %%
 
-<YYINITIAL>{SEMI}   { return new Token(Token.SEMI);   }
+<YYINITIAL>{SEMI}                                   { return new Token(Token.SEMI);   }
+<YYINITIAL>[0-9]+(\.?[0-9]*)?([eE][+-]?[0-9]+)?     { return new Token(Token.NUMBER,yytext());   }
+<YYINITIAL>[+]                                      { return new Token(Token.PLUS);   }
+<YYINITIAL>"-"                                      { return new Token(Token.MINUS);   }
+<YYINITIAL>[*]                                      { return new Token(Token.MULT);   }
+<YYINITIAL>"/"                                      { return new Token(Token.DIV);   }
+<YYINITIAL>"%"                                      { return new Token(Token.MOD);   }
+<YYINITIAL>"^"                                      { return new Token(Token.EXP);   }
+<YYINITIAL>"("                                      { return new Token(Token.LPAREN);   }
+<YYINITIAL>")"                                      { return new Token(Token.RPAREN);   }
+<YYINITIAL>"~"                                      { return new Token(Token.UNARY);   }
 
 <YYINITIAL>{WHITE}  { /* NO HACER NADA */             }
 
