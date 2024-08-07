@@ -130,18 +130,12 @@ public class Parser {
     }
 
     private boolean S() {
-        return (E() && term(Token.SEMI) && V() ||term(Token.LPAREN) && E() && term(Token.RPAREN) && term(Token.SEMI) && V());
+        return (E() && term(Token.SEMI) && (V()))||(term(Token.LPAREN) && E() && term(Token.RPAREN) && term(Token.SEMI));
     }
 
     private boolean V() {
-        if(E() || TOKENS() && E()|| E() && TOKENS()|| TOKENS() && E() && TOKENS()){
-            return false;
-        }
+        if(E()){return false;}
         return true;
-    }
-
-    private boolean TOKENS() {
-        return term(Token.PLUS);
     }
 
     private boolean E() {
@@ -157,10 +151,10 @@ public class Parser {
     }
 
     private boolean E1() {
-        return M() && term(Token.PLUS) && E();
+        return (M() && term(Token.PLUS) && E())||(term(Token.LPAREN) && M() && term(Token.PLUS) && E() && term(Token.RPAREN));
     }
     private boolean E2() {
-        return M()||term(Token.LPAREN) && M() && term(Token.RPAREN);
+        return M()||(term(Token.UNARY)&&M());
     }
 
     private boolean M() {
@@ -176,10 +170,10 @@ public class Parser {
     }
 
     private boolean M1() {
-        return N() && term(Token.MINUS) && M();
+        return (N() && term(Token.MINUS) && M())||(term(Token.LPAREN) && N() && term(Token.MINUS) && M() && term(Token.RPAREN));
     }
     private boolean M2() {
-        return N()||term(Token.LPAREN) && N() && term(Token.RPAREN);
+        return N();
     }
 
     private boolean N() {
@@ -195,10 +189,10 @@ public class Parser {
     }
 
     private boolean N1() {
-        return O() && term(Token.MULT) && N();
+        return (O() && term(Token.MULT) && N())||(term(Token.LPAREN) && O() && term(Token.MULT) && N() && term(Token.RPAREN));
     }
     private boolean N2() {
-        return O()||term(Token.LPAREN) && O() && term(Token.RPAREN);
+        return O();
     }
     
     private boolean O() {
@@ -214,10 +208,10 @@ public class Parser {
     }
 
     private boolean O1() {
-        return P() && term(Token.DIV) && O();
+        return (P() && term(Token.DIV) && O())||(term(Token.LPAREN) && P() && term(Token.DIV) && O() && term(Token.RPAREN));
     }
     private boolean O2() {
-        return P()||term(Token.LPAREN) && P() && term(Token.RPAREN);
+        return P();
     }
 
     private boolean P() {
@@ -233,10 +227,10 @@ public class Parser {
     }
 
     private boolean P1() {
-        return Q() && term(Token.MOD) && P();
+        return (Q() && term(Token.MOD) && P())||(term(Token.LPAREN) && Q() && term(Token.MOD) && P() && term(Token.RPAREN));
     }
     private boolean P2() {
-        return Q()||term(Token.LPAREN) && Q() && term(Token.RPAREN);
+        return Q();
     }
 
     private boolean Q() {
@@ -252,7 +246,7 @@ public class Parser {
     }
 
     private boolean Q1() {
-        return T() && term(Token.EXP) && Q();
+        return (T() && term(Token.EXP) && Q())||(term(Token.LPAREN) && T() && term(Token.EXP) && Q() && term(Token.RPAREN));
     }
     private boolean Q2() {
         return T();
